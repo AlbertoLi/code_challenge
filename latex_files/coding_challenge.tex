@@ -1,0 +1,348 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+%\usepackage{fullpage}
+\usepackage[top=1in, bottom=1in, left=0.8in, right=1in]{geometry}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\usepackage{listings}
+\usepackage{enumerate}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+
+% Javascript code block support thanks to: https://github.com/ghammock/LaTeX_Listings_JavaScript_ES6 on 02/02/20
+\usepackage{listings}
+\usepackage{color}
+\lstdefinelanguage{JavaScript}{
+  morekeywords=[1]{break, continue, delete, else, for, function, if, in,
+    new, return, this, typeof, var, void, while, with, const, public, class},
+  % Literals, primitive types, and reference types.
+  morekeywords=[2]{false, null, true, boolean, number, undefined,
+    Array, Boolean, Date, Math, Number, String, Object, Movie},
+  % Built-ins.
+  morekeywords=[3]{eval, parseInt, parseFloat, escape, unescape},
+  sensitive,
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]//,
+  morecomment=[s]{/**}{*/}, % JavaDoc style comments
+  morestring=[b]',
+  morestring=[b]"
+}[keywords, comments, strings]
+
+\definecolor{mediumgray}{rgb}{0.3, 0.4, 0.4}
+\definecolor{mediumblue}{rgb}{0.0, 0.0, 0.8}
+\definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
+\definecolor{darkviolet}{rgb}{0.58, 0.0, 0.83}
+\definecolor{royalblue}{rgb}{0.25, 0.41, 0.88}
+\definecolor{crimson}{rgb}{0.86, 0.8, 0.24}
+\definecolor{blueish}{rgb}{0.1, 0.1, 0.4}
+
+\lstdefinestyle{JSES6Base}{
+  backgroundcolor=\color{white},
+  basicstyle=\ttfamily,
+  breakatwhitespace=false,
+  breaklines=false,
+  captionpos=b,
+  columns=fullflexible,
+  commentstyle=\color{forestgreen}\upshape,
+  emph={},
+  emphstyle=\color{crimson},
+  extendedchars=true,  % requires inputenc
+  fontadjust=true,
+  frame=single,
+  identifierstyle=\color{black},
+  keepspaces=true,
+  keywordstyle=\color{mediumblue},
+  keywordstyle={[2]\color{darkviolet}},
+  keywordstyle={[3]\color{royalblue}},
+%   numbers=left,
+  numbersep=5pt,
+  numberstyle=\tiny\color{black},
+  rulecolor=\color{black},
+  showlines=true,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stringstyle=\color{blueish}\ttfamily,
+  tabsize=2,
+  title=\lstname,
+  upquote=true  % requires textcomp
+}
+
+\lstdefinestyle{JavaScript}{
+  language=JavaScript,
+  style=JSES6Base
+}
+\lstdefinestyle{ES6}{
+  language=ES6,
+  style=JSES6Base
+}
+
+
+\setlength{\columnsep}{0.1pc}
+
+\title{  Coding Challenge 2020Q1 Problem Set \\
+  \large Handling data transformations using map, filter, reduce \\
+    and functional programming techniques }
+\author{Team Name (Optional): \\ \\ \\ \\  Members: \\ \\ \\ \\ \\ \\}
+\date{February 7, 2020}
+\begin{document}
+
+  \maketitle
+
+  \vspace{-0.3in}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+
+  \noindent
+  \textbf{For each problem, follow the directions stated on the description of the problem.} The programming language for this challenge will be 
+  \textbf{javascript/typescript}. Please note that the correct solution may come in the form of either providing the code snippet that answers the problem description or providing the console output for the given code block.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Reference Page
+\newpage
+\setcounter{secnumdepth}{0} %% no numbering
+\section{Reference Page: Map, Filter, Reduce}
+If you are already familiar with the map, filter, reduce functions please feel free to skip this page.
+
+\subsection{map()}
+The Array.map method creates a new array populated with the results of calling a provided function on every element in the calling array.\footnote{\label{note1}https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Array} \\
+\textbf{Syntax}: \\
+\texttt{array.map(function(currentValue, index, arr), thisValue)} \\
+\textbf{Example}:\\
+\texttt{ let arr = [1, 5, 6] \\
+arr.map(x => x*2) // returns [2, 10, 12]}
+
+\subsection{filter()}
+The Array.filter method creates a new array with all elements that pass 
+the test implemented by the provided function.\footnotemark[\ref{note1}] \\
+\textbf{Syntax}: \texttt{let newArray = arr.filter(callback(element[, index[, array]])[, thisArg])} \\
+\textbf{Example}:\\
+\texttt{ let arr = [1, 2, 3, 4, 5, 6] \\
+arr.filter(x => x \% 2 == 0) // returns [2, 4, 6]
+}
+
+\subsection{reduce()}
+The Array.reduce method executes a reducer function (that you provide) on each element of the array, resulting in a single output value.\footnotemark[\ref{note1}] \\
+\textbf{Syntax}: \texttt{arr.reduce(callback(accumulator, currentValue[, index[, array]] )[, initialValue])} \\
+\textbf{Example}:\\
+\texttt{ let arr = [1, 2, 3, 6] \\
+arr.reduce((accum, curr) => (accum + curr), 0) // returns 12 (the sum)
+}
+
+\subsection{ES6 Spread Operator \ldots}
+Spread syntax \textbf{(\ldots)} allows an iterable such as an array expression, string, or object to be expanded in places where zero or more arguments (for function calls) or elements (for array literals) are expected, or an object expression to be expanded in places where zero or more key-value pairs (for object literals) are expected.\footnotemark[\ref{note1}] \\ \noindent
+\textbf{Example:} \\
+\texttt{
+var user = \{ name: \textquotesingle person\textquotesingle, age: 23 \} \\
+var result = \{...user, likable: true\} \\
+console.log(result) // \{ name: 'person', age: 23, likable: true \}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Part 1: Map, filter, reduce on iterable data structures}
+% Problems:
+
+  \begin{enumerate}
+
+    % Problem 1
+    \item \textbf{(1 pt.)} Using \texttt{map}, finish the return statement in the given function which should take in a list of numbers and \textbf{return a list of numbers where each element in the list is multiplied by 10}. \\
+    \textbf{Expected Result:} \\
+    \texttt{
+    nums  => [1,2,3,4,5,6,7,8,9,10] \\
+    q1(nums) => [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    }
+    
+\begin{lstlisting}[style=JavaScript]
+function q1(nums) : number[] {
+    // Your Code Here
+    return 
+
+}
+\end{lstlisting}
+
+
+
+\newpage
+    % Problem 2
+    \item \textbf{(1 pt.)} Using \texttt{reduce}, write a function \textbf{returns the average rating} of the movies in the catalog. \\
+    \textbf{Expected Result:} \\
+    \texttt{
+    movies  => (moviesCatalog : Movies[]) \\
+    q2(movies) => 4.2
+    }
+\begin{lstlisting}[style=JavaScript]
+const moviesCatalog : Movie[] = [{
+    "id": 70111470,
+    "title": "Die Hard",
+    "boxart": "http://cdn-0.nflximg.com/images/2891/DieHard.jpg",
+    "rating": 4.0
+}, {
+    "id": 654356453,
+    "title": "Bad Boys",
+    "boxart": "http://cdn-0.nflximg.com/images/2891/BadBoys.jpg",
+    "rating": 5.0
+}, {
+    "id": 65432445,
+    "title": "The Chamber",
+    "boxart": "http://cdn-0.nflximg.com/images/2891/TheChamber.jpg",
+    "rating": 4.0
+}, {
+    "id": 64248315,
+    "title": "The Wolf of Wall Street",
+    "boxart": "http://cdn-0.nflximg.com/images/2891/WolfOnWallStr.jpg",
+    "rating": 3.0
+}, {
+    "id": 64245743,
+    "title": "The GodFather",
+    "boxart": "http://cdn-0.nflximg.com/images/2891/TheGodFather.jpg",
+    "rating": 5.0
+}];
+class Movie {
+    public id : number;
+    public title: String; 
+    public boxart: String;
+    public rating: number;
+}
+
+function q2(movies: Movie[]) : number {
+    // Your Code Here
+    return 
+    
+}
+\end{lstlisting}
+
+
+\newpage
+% Problem 3
+\item \textbf{(1 pt.)} Using a chain of maps, filters, or reduces. Write a function that returns a list of movies that: \\
+  1. \textbf{(1/3 pt.}) starts with \texttt{'The'} (account for case insensitivity) \\
+  2. \textbf{(1/3 pt.}) has a \texttt{rating > 3} \\
+  3. \textbf{(1/3 pt.}) append property \texttt{imageFileName} which is the base file name coming from the \texttt{boxart} property, i.e. \{..., boxart: http://cdn-0.nflximg.com/images/2891/DieHard.jpg\} => \{..., imageFileName: DieHard.jpg\}. \\
+  *Note that the imageFileName comes from the string after the last slash (/) in the boxart property \\
+  
+  Please refer to the movie data used in problem 2.
+
+\begin{lstlisting}[style=JavaScript]
+function q3(movies: Movie[]) : number {
+    // Your Code Here
+    return 
+    
+    
+    
+}
+\end{lstlisting}
+
+
+\newpage
+\section{Part 2: Function Composition and Currying}
+% Problem 4
+
+\item \textbf{(1 pt.}) What is the output to the console when the following code is executed? \\ \textbf{*Note}: pipe, map, and filter have been re-written to be used for function composition.
+\begin{lstlisting}[style=JavaScript]
+const pipe = (...fns) => args => fns.reduce((arg, f) => f(arg), args)
+const map = fn => arr => arr.map(fn)
+const filter = fn => arr => arr.filter(fn)
+const classmates = [{ name: "Charlie",
+    age: 20,
+    sex: "male",
+    likabilityScore: 95,
+    isKind: true
+}, {
+    name: "Riley",
+    age: 23,
+    sex: "female",
+    likabilityScore: 78,
+    isKind: false
+}, {
+    name: "Alex",
+    age: 25,
+    sex: "female",
+    likabilityScore: 77,
+    isKind: true
+}, {
+    name: "Skyler",
+    age: 21,
+    sex: "male",
+    likabilityScore: 86,
+    isKind: false}]
+const mysteryFunction1 = arr => map(x => x.isKind ? 
+{...x, likabilityScore: x.likabilityScore + 4} : x)(arr)
+const mysteryFunction2 = arr => filter(x => x.likabilityScore >= 80)(arr)
+
+var closeFriends = pipe(
+    filter(x => x.age >= 21),
+    mysteryFunction1,
+    mysteryFunction2,
+    map(x => (x.name))
+)(classmates)
+
+console.log(closeFriends)
+\end{lstlisting}
+
+
+% Problem 5
+\newpage
+\item \textbf{(1 pt.}) What is the output to the console when the following code is executed? \footnote{\label{note2}https://medium.com/javascript-scene/curry-and-function-composition-2c208d774983}
+    
+\begin{lstlisting}[style=JavaScript]
+export const pipe = (...fns) => x => fns.reduce((y, f) => f(y), x);
+export const flip = fn => a => b => fn(b)(a);
+export const trace = value => label => {
+    console.log(`${ label }: ${ value }`);
+    return value;
+};
+
+const flippedTrace = flip(trace);
+const g = n => n + 1;
+const f = n => n * 2;
+
+const h = pipe(
+    g,                
+    flippedTrace('after g'),
+    f,
+    flippedTrace('after f')
+);
+
+h(20);
+\end{lstlisting}
+
+    
+    
+% Problem 6
+\newpage
+\subsection{Tiebreaker}
+\textbf{Please ignore this problem unless further instruction to do so is given.}
+
+\item \textbf{(1 pt.}) What is the output to the console when the following code is executed? \\ \textbf{*Note}: \texttt{Array.pop()} removes the last element from an array and returns that value to the caller.\footnotemark[\ref{note1}] 
+
+
+    
+\begin{lstlisting}[style=JavaScript]
+var sequence = [1, 7, 12, 8, 2, 0, 3, 9, 6, 10, 5, 11, 4]
+var wordScramble = [
+    ['A', 'Z', 'Y', 'M', 'C',' X', 'N', 'D', 'O', 'P', 'T', 'G', 'Q'],
+    ['M', 'D', 'T', 'R', 'V',' S', 'L', 'P', 'I', 'C', 'X', 'O', 'N'],
+    ['N', 'E', 'R', 'X', 'N', 'D', 'P', 'R', 'J', 'T', 'C', 'V', 'U'],
+    ['H', 'X', 'M', 'B', 'E', 'I', 'N', 'P', 'J', 'X', 'E', 'V', 'O'],
+    ['N', 'X', 'J', 'T', 'O', 'P', 'C', 'G', 'H', 'L', 'S', 'A', 'K'],
+    ['O', 'F', 'L', 'D', 'V', 'B', 'R', 'W', 'R', 'O', 'H', 'F', 'B'],
+    ['K', 'J', 'U', 'M', 'E', 'T', 'Y', 'E', 'B', 'M', 'C', 'V', 'I'],
+    ['M', 'X', 'R', 'A', 'Z', 'I', 'T', 'F', 'K', 'V', 'U', 'M', 'X'],
+    ['U', 'S', 'U', 'J', 'V', 'P', 'U', 'B', 'Q', 'X', 'I', 'N', 'I'],
+    ['R', 'L', 'I', 'H', 'C', 'Y', 'D', 'J', 'N', 'G', 'T', 'R', 'E'],
+    ['F', 'K', 'C', 'R', 'M', 'U', 'I', 'X', 'Z', 'E', 'R', 'L', 'I'],
+    ['W', 'M', 'O', 'S', 'D', 'F', 'Y', 'T', 'P', 'U', 'L', 'C', 'B'],
+    ['N', 'Y', 'J', 'K', 'I', 'R', 'P', 'L', 'F', 'O', 'X', 'B', 'U']
+]
+
+var result: any = wordScramble.reduce((accum, curr) =>
+                                accum + curr[sequence.pop()], 
+                                '')
+console.log(result)
+\end{lstlisting} 
+
+
+\end{enumerate}
+
+
+\end{document}
